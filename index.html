@@ -1,0 +1,207 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+	<link rel="stylesheet" href="css/theme/main.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h3>Cross-build Node modules</h3>
+			</section>
+			<section>
+				<section>
+					<br>
+					<br>
+					<div class="stretch">
+						<img src="assets/linkit7688_duo.png" alt="LinkIt 7688 Duo microcontroller">
+					</div>
+				</section>
+				<section>
+					<h4>Hardware Specs</h4>
+					<table>
+						<thead>
+							<tbody>
+								<tr>
+									<td>CPU</td>
+									<td>MIPS 24KEc 580MHz</td>
+								</tr>
+								<tr>
+									<td>RAM</td>
+									<td>128MB</td>
+								</tr>
+								<tr>
+									<td>Flash</td>
+									<td>32MB</td>
+								</tr>
+								<tr>
+									<td>WiFi</td>
+									<td>b/g/n 2.4GHz</td>
+								</tr>
+								<tr>
+									<td>Ethernet</td>
+									<td>10/100Mbps</td>
+								</tr>
+								<tr>
+									<td>SD</td>
+									<td>SD-XC</td>
+								</tr>
+								<tr>
+									<td>USB</td>
+									<td>USB 2.0 (Micro-B)</td>
+								</tr>
+								<tr>
+									<td>MCU</td>
+									<td>ATmega32U4 8MHz</td>
+								</tr>
+							</tbody>
+					</table>
+				</section>
+				<section>
+					<div class="high_level_open_wrt">
+						<label>Open WRT</label>
+						<div class="high_level_app_logic">
+							<span>App Logic</span>
+						</div>
+						<div class="high_level_node_js">
+							<span>Node.js</span>
+						</div>
+						<div class="high_level_firmata_open_wrt">
+							<span>Firmata</span>
+						</div>
+					</div>
+					<div class="high_level_arduino">
+						<label>Arduino</label>
+						<div class="high_level_firmata_arduino">
+							<span>Firmata</span>
+						</div>
+						<div class="high_level_sensors">
+							<span>Sensors</span>
+						</div>
+					</div>
+				</section>
+
+			</section>
+			<section>
+				<section>
+					<div class="stretch">
+						<img src="assets/docker_logo.png" alt="Docker logo">
+					</div>
+				</section>
+				<section>
+					<h4>What is it?</h4>
+					<p>Docker automates setting up and configuring development 
+						environments.
+					</p>
+				</section>
+				<section>
+					<h4>Containers</h4>
+					<p>A container is an executable package that contains all the necessary
+						software to run.
+					</p>
+					<ul>
+						<li>efficient</li>
+						<li>light-weight</li>
+						<li>self-contained</li>
+					</ul>
+				</section>
+				<section>
+					<h4>Docker File</h4>
+						<pre class="stretch"><code># Mock ENV for cross build MT7688
+#
+# Pull base image.
+FROM ubuntu:14.04
+# Install.
+RUN \
+  sed -i 's/# \(.*multiverse$\)/\1/g' /etc/apt/sources.list && \
+  apt-get update && \
+  apt-get -y upgrade && \
+  apt-get install -y build-essential && \
+  apt-get install -y python && \
+  apt-get install -y software-properties-common && \
+  apt-get install -y byobu curl git htop man unzip vim wget && \
+  rm -rf /var/lib/apt/lists/*
+# Set environment variables.
+ENV HOME /root
+# Define working directory.
+WORKDIR /root
+# Install NVM
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.1/install.sh | bash
+ENV \
+  NVM_DIR=/root/.nvm \
+  NODE_VERSION=v0.12.7
+# Install Node v0.12.7 and NPM v2.11.3
+RUN \ 
+  . $HOME/.nvm/nvm.sh && \
+  nvm install $NODE_VERSION && \
+  nvm alias default $NODE_VERSION && \
+  nvm use default && \
+  npm install -g npm@2.11.3
+# Clone MT7688 cross-build repo and build enviornment.
+RUN \
+  git clone https://github.com/simenkid/mt7688-cross.git && \
+  cd mt7688-cross && \
+  bash create_env.sh
+# Define default command.
+CMD ["bash"]
+							</code></pre>
+				</section>
+				<section>
+					<h4>Running dockerfile</h4>
+					<video controls>
+						<source src="assets/building_docker_file.mp4" type="video/mp4">
+					</video>
+				</section>
+				<section>
+					<h4>Compiling johnny-five</h4>
+					<video controls>
+						<source src="assets/building_node_module.mp4" type="video/mp4">
+					</video>
+				</section>
+
+			</section>
+			<section>Demo or it didn't happen...</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info https://github.com/hakimel/reveal.js#configuration
+		Reveal.initialize({
+			history: true,
+
+			// More info https://github.com/hakimel/reveal.js#dependencies
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>

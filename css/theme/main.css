@@ -1,0 +1,23 @@
+div.high_level_open_wrt {
+  background-color: #a5e6aa;
+  width: 400px;
+  min-height: 300px;
+  margin: 0 auto; }
+  div.high_level_open_wrt label {
+    text-align: left; }
+  div.high_level_open_wrt > div {
+    width: 80%;
+    margin: 1rem auto;
+    background-color: #68bc25; }
+
+div.high_level_arduino {
+  background-color: #78b4e6;
+  width: 400px;
+  min-height: 230px;
+  margin: 0 auto; }
+  div.high_level_arduino > div {
+    width: 80%;
+    margin: 1rem auto;
+    background-color: #2f78bc; }
+    div.high_level_arduino > div:last-of-type {
+      background-color: #b40964; }
