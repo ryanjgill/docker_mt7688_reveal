@@ -1,3 +1,6 @@
+.ta-left {
+  text-align: left; }
+
 div.high_level_open_wrt {
   background-color: #a5e6aa;
   width: 400px;
@@ -21,3 +24,46 @@ div.high_level_arduino {
     background-color: #2f78bc; }
     div.high_level_arduino > div:last-of-type {
       background-color: #b40964; }
+
+div.cross_build_success {
+  max-width: 60%;
+  margin: 0 auto; }
+
+div.recap_flow div {
+  text-align: left; }
+  div.recap_flow div:nth-of-type(1) {
+    margin-left: 5rem; }
+  div.recap_flow div:nth-of-type(2) {
+    margin-left: 10rem; }
+  div.recap_flow div:nth-of-type(3) {
+    margin-left: 15rem; }
+  div.recap_flow div:nth-of-type(4) {
+    margin-left: 20rem; }
+  div.recap_flow div:nth-of-type(5) {
+    margin-left: 25rem; }
+
+ul.sources_list {
+  font-size: 0.8em;
+  list-style: none; }
+  ul.sources_list li {
+    margin: 1rem 0; }
+    ul.sources_list li:nth-of-type(1):before {
+      content: "[1]";
+      display: inline-block;
+      margin-left: -48px; }
+    ul.sources_list li:nth-of-type(2):before {
+      content: "[2]";
+      display: inline-block;
+      margin-left: -48px; }
+    ul.sources_list li:nth-of-type(3):before {
+      content: "[3]";
+      display: inline-block;
+      margin-left: -48px; }
+    ul.sources_list li:nth-of-type(4):before {
+      content: "[4]";
+      display: inline-block;
+      margin-left: -48px; }
+    ul.sources_list li:nth-of-type(5):before {
+      content: "[5]";
+      display: inline-block;
+      margin-left: -48px; }

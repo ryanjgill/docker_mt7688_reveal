@@ -29,6 +29,9 @@
 		<div class="slides">
 			<section>
 				<h3>Cross-build Node modules</h3>
+				<p class="ta-left">Use Docker to build environment for cross-compiling node 
+					modules for the LinkIt 7688.
+				</p>
 			</section>
 			<section>
 				<section>
@@ -101,6 +104,53 @@
 						</div>
 					</div>
 				</section>
+				<section>
+					<h4>Problems installing Node modules</h4>
+					<ul>
+						<li>Slow processor</li>
+						<li>Limited RAM (128 MB)</li>
+						<li>Limited flash storage (32 MB)</li>
+						<li>Connection timeout issues</li>
+					</ul>
+				</section>
+				<section>
+					<pre><code>npm install express</code></pre>
+					<!-- TODO: add video of npm install express failing -->
+					<div class="stretch">
+						<video src="assets/install_express_fail.mp4"></video>
+					</div>
+				</section>
+				<section>
+					<h4>MediaTek's Solution</h4>
+					<p class="ta-left">Setup the following enviornment:</p>
+					<ul>
+						<li>Ubuntu v14.04</li>
+						<li>Node v0.12.7, NPM v2.11.3</li>
+						<li>subversion, build-essential, gcc-multilib, g++-multilib</li>
+						<li>mt7688-cross repo</li>
+					</ul>
+				</section>
+				<section>
+					<h5>MediaTek's Solution (cont.)</h5>
+					<p class="ta-left">Once the environment is created and the cross-build repo
+						has been cloned, we must run a script to build the cross-build environment.
+					</p>
+					<pre><code>./create_env.sh</code></pre>
+					<p class="ta-left">This process should take approximately 20 minutes.</p>
+				</section>
+				<section>
+					<h3>But what if I don't have ...</h3>
+					<ul>
+						<li>Ubuntu</li>
+						<br>
+						<li>VM CLient:</li>
+						<ul>
+							<li>Parallels</li>
+							<li>VirtualBox</li>
+							<li>VMware</li>
+						</ul>
+					</ul>
+				</section>
 
 			</section>
 			<section>
@@ -111,13 +161,19 @@
 				</section>
 				<section>
 					<h4>What is it?</h4>
-					<p>Docker automates setting up and configuring development 
+					<p class="ta-left">Docker automates setting up and configuring development
 						environments.
 					</p>
+					<ul>
+						<li>Easy to get going</li>
+						<li>Light overhead compared to full VM</li>
+						<li>Isolated</li>
+						<li>Eliminates <i>"works on my box"</i></li>
+					</ul>
 				</section>
 				<section>
 					<h4>Containers</h4>
-					<p>A container is an executable package that contains all the necessary
+					<p class="ta-left">A container is an executable package that contains all the necessary
 						software to run.
 					</p>
 					<ul>
@@ -127,7 +183,30 @@
 					</ul>
 				</section>
 				<section>
-					<h4>Docker File</h4>
+					<h4>Images</h4>
+					<p class="ta-left">Docker images are the basis of containers. An Image is an 
+						ordered collection of root filesystem changes and the corresponding 
+						execution parameters for use within a container runtime. All containers 
+						start from a base image and layers are added by making changes to the filesystem.
+					</p>
+				</section>
+				<section>
+					<h4>Dockerfile</h4>
+					<p class="ta-left">A Dockerfile is a text document that contains all the 
+						commands you would normally execute manually in order to build a 
+						Docker image. Docker can build images automatically by reading the 
+						instructions from a Dockerfile.
+					</p>
+				</section>
+				<section>
+					<h4>Recap</h4>
+					<div class="stretch">
+						<img src="assets/recap.png" alt="Docker flow recap">
+					</div>
+					
+				</section>
+				<section>
+					<h4>Cross-build Docker File</h4>
 						<pre class="stretch"><code># Mock ENV for cross build MT7688
 #
 # Pull base image.
@@ -168,10 +247,61 @@ CMD ["bash"]
 							</code></pre>
 				</section>
 				<section>
-					<h4>Running dockerfile</h4>
+					<h4>Lets build it!</h4>
+					<p class="ta-left">To build our custom image from our Dockerfile we run:</p>
+					<pre><code>docker build -t mt7688-cross .</code></pre>
+					<p class="ta-left">This tells docker to look in the local directory for our 
+						Dockerfile, build the image and tag it <i>mt7688-cross</i>.
+					</p>
+				</section>
+				<section>
+					<h4>Build Image from Dockerfile</h4>
 					<video controls>
 						<source src="assets/building_docker_file.mp4" type="video/mp4">
 					</video>
+				</section>
+				<section>
+					<div class="cross_build_success">
+						<img src="assets/cross_build_done.png" alt="Cross build success message">
+					</div>
+					<div>
+						<img src="assets/custom_image_size.png" alt="Size of custom docker images">
+					</div>
+				</section>
+				<section>
+					<h4>Run image in container</h4>
+					<pre><code>docker run -it mt7688-cross </code></pre>
+					<div class="stretch">
+						<img src="assets/docker_run_image.png" alt="Docker run image">
+					</div>
+				</section>
+				<section>
+					<h4>Exit running container</h4>
+					<pre><code>exit</code></pre>
+					<div class="stretch">
+						<img src="assets/docker_exit.png" alt="Exit running container">
+					</div>
+				</section>
+				<section>
+					<h4>Start container and attach</h4>
+					<pre><code>docker start -ai container_id</code></pre>
+					<p class="ta-left">This starts the container and then attaches to the container 
+						using the flags <i>-a</i> for attach and <i>-i</i> for interactive.
+					</p>
+					<div class="stretch">
+						<img src="assets/docker_start.png" alt="Start stoped container">
+					</div>
+				</section>
+				<section>
+					<h3>Ready to install npm modules.</h3>
+					<p class="ta-left">To install modules, we run the following command from inside
+						the cross-build folder.
+					</p>
+					<pre><code>./npm_install.sh NAME_OF_MODULE</code></pre>
+					<p class="ta-left">Install express.</p>
+					<pre><code>./npm_install.sh express</code></pre>
+					<p class="ta-left">You can also specifiy module versions</p>
+					<pre><code>./npm_install.sh serialport@2.1.2</code></pre>
 				</section>
 				<section>
 					<h4>Compiling johnny-five</h4>
@@ -182,6 +312,29 @@ CMD ["bash"]
 
 			</section>
 			<section>Demo or it didn't happen...</section>
+			<section>
+				<h4>Sources</h4>
+				<ul class="sources_list">
+					<li>
+						Blue Chen. "LinkIt smart 7688 e-book for Node.js community", 
+						https://iamblue.gitbooks.io/linkit-smart-nodejs/en/, MediaTek, 
+						18 Dec. 2016. Web. 22 Apr. 2017.
+					</li>
+					<li>
+						"What is Docker?", https://www.docker.com/what-docker, Docker, 2017.
+						Web. 22 Apr. 2017.
+					</li>
+					<li>
+						"What is a Container?", https://www.docker.com/what-container, Docker, 2017.
+						Web. 22 Apr. 2017.
+					</li>
+					<li>
+						Jake Wright. "Learn Docker in 12 Minutes", 
+						https://www.youtube.com/watch?v=YFl2mCHdv24, YouTube, 6 Sept. 2016.
+						Web. 22 Apr. 2017. 
+					</li>
+				</ul>
+			</section>
 		</div>
 	</div>
 

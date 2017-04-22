@@ -1,3 +1,8 @@
+.ta-left {
+  text-align: left;
+}
+
+
 div.high_level_open_wrt {
   background-color: rgb(165,230,170);
   width: 400px;
@@ -31,4 +36,40 @@ div.high_level_arduino {
     }
   }
   
+}
+
+div.cross_build_success {
+  max-width: 60%;
+  margin: 0 auto;
+}
+
+div.recap_flow {
+ div {
+    text-align: left;
+
+    @for $i from 1 through 5 {
+      &:nth-of-type(#{$i}) {
+        margin-left: #{$i * 5}rem;
+      }
+    }
+  }
+}
+
+ul.sources_list {
+  font-size: 0.8em;
+  list-style: none;
+
+  li {
+    margin: 1rem 0;
+
+    @for $i from 1 through 5 {
+      &:nth-of-type(#{$i}) {
+        &:before{
+          content: '[#{$i}]';
+          display: inline-block;
+          margin-left: -48px;
+        } 
+      }
+    }
+  }
 }
