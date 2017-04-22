@@ -2,6 +2,20 @@
   text-align: left;
 }
 
+.ta-right {
+  text-align: right;
+}
+
+span.author {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+table.specs {
+  font-size: 0.8em;
+}
+
 
 div.high_level_open_wrt {
   background-color: rgb(165,230,170);
