@@ -28,14 +28,32 @@
 	<div class="reveal">
 		<div class="slides">
 			<section>
-				<h2>Cross-build Node modules</h2>
-				<p class="ta-left">Use Docker to create an environment for cross-compiling node 
-					modules for the LinkIt 7688.
-				</p>
-				<br>
-				<br>
-				<span class="author">By: Ryan Gill</span>
+				<section>
+					<h2>Cross-build Node modules</h2>
+					<p class="ta-left">Use Docker to create an environment for cross-compiling node 
+						modules for the LinkIt 7688.
+					</p>
+					<br>
+					<br>
+					<span class="author">By: Ryan Gill</span>
+				</section>
+				<section>
+					<h3>Major talking points</h3>
+					<ul>
+						<li>LinkIt 7688 Duo</li>
+							<ul>
+								<li>Problems installing Node modules</li>
+								<li>MediaTek's recommended solution</li>
+						</ul>
+						<li>Using Docker</li>
+							<ul>
+								<li>automate the process</li>
+								<li>replicate on any machine</li>
+							</ul>
+					</ul>
+				</section>
 			</section>
+			
 			<section>
 				<section>
 					<br>
@@ -106,6 +124,14 @@
 							<span>Sensors</span>
 						</div>
 					</div>
+					<aside class="notes">OpenWrt is described as a Linux distribution for embedded devices.
+						<br><br>
+						The green section represents our linux instance where we will run our webserver and
+						also handle the communication with the GPIO pins using firmata with Johnny-Five.
+						<br><br>
+						The blue section represents the MCU or microcontroller that will be running a modified version
+						of the firmata sketch. This allows our Node application access to the sensors. 
+					</aside>
 				</section>
 				<section>
 					<h4>Problems installing Node modules</h4>
