@@ -48,7 +48,10 @@
 						<li>Using Docker</li>
 							<ul>
 								<li>automate the process</li>
-								<li>replicate on any machine</li>
+							</ul>
+						<li>Demo LinkIt Toy Tank</li>
+							<ul>
+								<li>express, socket.io, johnny-five</li>
 							</ul>
 					</ul>
 				</section>
@@ -146,7 +149,15 @@
 					<pre><code>npm install express</code></pre>
 					<!-- TODO: add video of npm install express failing -->
 					<div class="stretch">
-						<video src="assets/install_express_fail.mp4"></video>
+						<video controls>
+							<source src="assets/install_express_fail.mp4" type="video/mp4">
+						</video>
+					</div>
+				</section>
+				<section>
+					<pre><code class="javascript">ENOSPC /* No space left on device */</code></pre>
+					<div class="stretch">
+						<img src="assets/npm_install_out_of_space.png" alt="NPM install out of space error.">
 					</div>
 				</section>
 				<section>
@@ -171,7 +182,6 @@
 					<h3>But what if I don't have ...</h3>
 					<ul>
 						<li>Ubuntu</li>
-						<br>
 						<li>VM CLient:</li>
 						<ul>
 							<li>Parallels</li>
