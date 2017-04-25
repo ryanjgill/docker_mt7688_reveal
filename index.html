@@ -47,13 +47,19 @@
 						</ul>
 						<li>Using Docker</li>
 							<ul>
-								<li>automate the process</li>
+								<li>automate the environment</li>
 							</ul>
-						<li>Demo LinkIt Toy Tank</li>
+						<li>Demo LinkIt Tank</li>
 							<ul>
 								<li>express, socket.io, johnny-five</li>
 							</ul>
 					</ul>
+					<aside class="notes">We will talk a little bit about the 
+						LinkIt 7688 Duo. I will discuss my experience working with the linkit 
+						and some of the problems I encounted as well as the way I overcame these challenges.
+						<br><br>
+						Then we will talk about Docker and why it is a good fit for this process.
+					</aside>
 				</section>
 			</section>
 			
@@ -64,6 +70,9 @@
 					<div class="stretch">
 						<img src="assets/linkit7688_duo.png" alt="LinkIt 7688 Duo microcontroller">
 					</div>
+					<aside class="notes">This is an overview of the LinkIt Smart 7688 Duo. 
+						It is an open development board that runs OpenWrt Linux distribution.
+					</aside>
 				</section>
 				<section>
 					<h4>Hardware Specs</h4>
@@ -104,6 +113,12 @@
 								</tr>
 							</tbody>
 					</table>
+					<aside class="notes">This is a list of the hardware specs. Take note of the 
+						limited Flash Storage. One key feature NOT listed here is the ability to 
+						generate an access point.<br><br>
+						The device also supports Station mode where it can connect to existing wifi connections
+						as well as Repeater mode which is a combo of the two.
+					</aside>
 				</section>
 				<section>
 					<div class="high_level_open_wrt">
@@ -115,7 +130,7 @@
 							<span>Node.js</span>
 						</div>
 						<div class="high_level_firmata_open_wrt">
-							<span>Firmata</span>
+							<span>Johnny-Five</span>
 						</div>
 					</div>
 					<div class="high_level_arduino">
@@ -127,10 +142,10 @@
 							<span>Sensors</span>
 						</div>
 					</div>
-					<aside class="notes">OpenWrt is described as a Linux distribution for embedded devices.
+					<aside class="notes">Overview of the software.
 						<br><br>
 						The green section represents our linux instance where we will run our webserver and
-						also handle the communication with the GPIO pins using firmata with Johnny-Five.
+						also handle the communication with the GPIO pins using using Johnny-Five.
 						<br><br>
 						The blue section represents the MCU or microcontroller that will be running a modified version
 						of the firmata sketch. This allows our Node application access to the sensors. 
@@ -144,6 +159,10 @@
 						<li>Limited flash storage (32 MB)</li>
 						<li>Connection timeout issues</li>
 					</ul>
+					<aside class="notes">So working with limited resources can cause a number
+						of issues installing node modules. Npm some times just hangs or it errors. <br><br>
+						And if your module needs to be compiled or rebuilt, you will be out of luck.
+					</aside>
 				</section>
 				<section>
 					<pre><code>npm install express</code></pre>
@@ -153,30 +172,44 @@
 							<source src="assets/install_express_fail.mp4" type="video/mp4">
 						</video>
 					</div>
+					<aside class="notes">Here is a video of the install failing 
+						when trying to install express.
+					</aside>
 				</section>
 				<section>
 					<pre><code class="javascript">ENOSPC /* No space left on device */</code></pre>
 					<div class="stretch">
 						<img src="assets/npm_install_out_of_space.png" alt="NPM install out of space error.">
 					</div>
+					<aside class="notes">The error ENOSPC is indicating that we ran out of space in the process
+						of doing the installation.
+					</aside>
 				</section>
 				<section>
 					<h4>MediaTek's Solution</h4>
-					<p class="ta-left">Setup the following enviornment:</p>
+					<p class="ta-left">Setup the following environment:</p>
 					<ul>
 						<li>Ubuntu v14.04</li>
 						<li>Node v0.12.7, NPM v2.11.3</li>
 						<li>subversion, build-essential, gcc-multilib, g++-multilib</li>
 						<li>mt7688-cross repo</li>
 					</ul>
+					<aside class="notes">So I got on the forums and found their guide to install node modules.
+						It required you to start with Ubuntu 14.04, install the same version of Node and npm as 
+						the LinkIt. Also you need to install some other libraries and clone their cross-build repository.
+					</aside>
 				</section>
 				<section>
 					<h5>MediaTek's Solution (cont.)</h5>
-					<p class="ta-left">Once the environment is created and the cross-build repo
+					<p class="ta-left">Once the OS is created and the cross-build repo
 						has been cloned, we must run a script to build the cross-build environment.
 					</p>
 					<pre><code>./create_env.sh</code></pre>
 					<p class="ta-left">This process should take approximately 20 minutes.</p>
+					<aside class="notes">Then you run the build script from their cross-build repo.
+						This step takes about 20 minutes to setup their cross-build environment. Once built, you can now run a second script
+						to cross-build nodes modules.
+					</aside>
 				</section>
 				<section>
 					<h3>But what if I don't have ...</h3>
@@ -189,6 +222,9 @@
 							<li>VMware</li>
 						</ul>
 					</ul>
+					<aside class="notes">So I wasn't too thrilled about running these random scripts
+						on my new computer and I don't own any VM clients like Parallels or VMware.
+					</aside>
 				</section>
 
 			</section>
@@ -204,11 +240,16 @@
 						environments.
 					</p>
 					<ul>
-						<li>Easy to get going</li>
+						<li>Runs images in isolated containers</li>
 						<li>Light overhead compared to full VM</li>
-						<li>Isolated</li>
+						<li>Easy to get going</li>
 						<li>Eliminates <i>"works on my box"</i></li>
 					</ul>
+					<aside class="notes">Docker automates the configuration of development
+						environments. It allows developers to run applications inside isolated containers
+						and garentees their containers will always run the same reguardless of the 
+						underlying OS.
+					</aside>
 				</section>
 				<section>
 					<h4>Containers</h4>
@@ -216,18 +257,28 @@
 						software to run.
 					</p>
 					<ul>
-						<li>efficient</li>
-						<li>light-weight</li>
-						<li>self-contained</li>
+						<li>code</li>
+						<li>system tools</li>
+						<li>system libraries</li>
+						<li>settings</li>
 					</ul>
+					<aside class="notes">A container is an executable package that contains all the necessary
+						software to run. This include actual code, runtime, system tools, system 
+						libraries and settings. Anything you need to run your application or more commonly
+						a microservice.
+					</aside>
 				</section>
 				<section>
 					<h4>Images</h4>
-					<p class="ta-left">Docker images are the basis of containers. An Image is an 
-						ordered collection of root filesystem changes and the corresponding 
-						execution parameters for use within a container runtime. All containers 
-						start from a base image and layers are added by making changes to the filesystem.
+					<p class="ta-left">An Image is an ordered collection of root filesystem 
+						changes and the corresponding execution parameters for use within a container 
+						runtime. All containers start from a base image and layers are added 
+						by making changes to the filesystem.
 					</p>
+					<aside class="notes">Docker images are the basis of containers. You start with a base image
+						and you makes changes to the filesystem. These changes are additional layers 
+						that are stacked on top of the base image.
+					</aside>
 				</section>
 				<section>
 					<h4>Dockerfile</h4>
@@ -236,13 +287,19 @@
 						Docker image. Docker can build images automatically by reading the 
 						instructions from a Dockerfile.
 					</p>
+					<aside class="notes">One way to create images is from a Dockerfile. A Dockerfile is just a text file
+						that instructs docker what base image we would like to start from and any changes to
+						that image we would like to make before building our custom image.
+					</aside>
 				</section>
 				<section>
 					<h4>Recap</h4>
 					<div class="stretch">
 						<img src="assets/recap.png" alt="Docker flow recap">
 					</div>
-					
+					<aside class="notes">You write a Dockerfile and you that that to get an image. Then you
+						can run that image to get containers.
+					</aside>
 				</section>
 				<section>
 					<h4>Cross-build Docker File</h4>
@@ -276,7 +333,7 @@ RUN \
   nvm alias default $NODE_VERSION && \
   nvm use default && \
   npm install -g npm@2.11.3
-# Clone MT7688 cross-build repo and build enviornment.
+# Clone MT7688 cross-build repo and build environment.
 RUN \
   git clone https://github.com/simenkid/mt7688-cross.git && \
   cd mt7688-cross && \
@@ -284,6 +341,31 @@ RUN \
 # Define default command.
 CMD ["bash"]
 							</code></pre>
+					<aside class="notes">Here is our Dockerfile that will use to build our custom image.
+						It uses the Ubuntu 14.04 base image and installs the required libraries. Then
+						we install NVM, and use it to install the proper versions of Node and NPM. Then
+						we clone their cross-build repository and run their create environment script.
+					</aside>
+				</section>
+				<section>
+					<h3>Dockerfile</h3>
+					<div class="stretch">
+						<img src="assets/docker_file_1.png" alt="First half of Dockerfile.">
+					</div>
+					<aside class="notes">So in the first half of our Dockerfile, we can see that we start
+						from the base image of Ubuntu version 14.04. Then we install some libraries, 
+						set an environment variable and working directory.
+					</aside>
+				</section>
+				<section>
+					<h3>Dockerfile</h3>
+					<div class="stretch">
+						<img src="assets/docker_file_2.png" alt="Second half of Dockerfile.">
+					</div>
+					<aside class="notes">In the 2nd section we install NVM and the correct versions 
+						of Node and NPM. Then we clone their cross build repo and run their create environment
+						script.
+					</aside>
 				</section>
 				<section>
 					<h4>Lets build it!</h4>
@@ -292,6 +374,10 @@ CMD ["bash"]
 					<p class="ta-left">This tells docker to look in the local directory for our 
 						Dockerfile, build the image and tag it <i>mt7688-cross</i>.
 					</p>
+					<aside class="notes">Here we run the docker build command passing the -t flag
+						to tag our image as mt7688-cross. The dot at the end is telling docker to look
+						for a dockerfile in the local directory.
+					</aside>
 				</section>
 				<section>
 					<h4>Build Image from Dockerfile</h4>
@@ -303,9 +389,14 @@ CMD ["bash"]
 					<div class="cross_build_success">
 						<img src="assets/cross_build_done.png" alt="Cross build success message">
 					</div>
+					<pre><code>docker images</code></pre>
 					<div>
 						<img src="assets/custom_image_size.png" alt="Size of custom docker images">
 					</div>
+					<aside class="notes">Once the build finishes, we now have our custom image. We can
+						use the docker images command to list all the images on our machine. The bottom image
+						shows the Ubuntu base image, as well as our custom image.
+					</aside>
 				</section>
 				<section>
 					<h4>Run image in container</h4>
@@ -331,8 +422,10 @@ CMD ["bash"]
 						<img src="assets/docker_start.png" alt="Start stoped container">
 					</div>
 				</section>
+			</section>
+			<section>
 				<section>
-					<h3>Ready to install npm modules.</h3>
+					<h3>NPM Install</h3>
 					<p class="ta-left">To install modules, we run the following command from inside
 						the cross-build folder.
 					</p>
@@ -341,14 +434,68 @@ CMD ["bash"]
 					<pre><code>./npm_install.sh express</code></pre>
 					<p class="ta-left">You can also specifiy module versions</p>
 					<pre><code>./npm_install.sh serialport@2.1.2</code></pre>
+					<aside class="notes">MediaTek has provided us with an install script to run
+						each time we would like to install a node module. To use it, we simply call the script
+						passing the name of the module we would like to install. You can also pass the
+						specific version number of the module if desired.
+					</aside>
 				</section>
 				<section>
 					<h4>Compiling johnny-five</h4>
 					<video controls>
 						<source src="assets/building_node_module.mp4" type="video/mp4">
 					</video>
+					<aside class="notes">Here is what it looks like installing johnny-five which needs 
+						to do a re-build on one of its dependencies named serialport.
+					</aside>
 				</section>
-
+				<section>
+					<h4>Compiling johnny-five</h4>
+					<div class="stretch">
+						<img src="assets/npm_install_johnny_five.gif" alt="Building Johnny-five node module.">
+					</div>
+				</section>
+				<section>
+					<img src="assets/node_modules_mips.png" alt="Node modules mips contents.">
+					<p class="ta-left">This process compiles the module and places the output
+						in the <i>node_modules_mips</i> folder. We will need to copy the file to our host 
+						machine. Then copy the contents to our projects <i>node_modules</i> folder on the
+						LinkIt device.
+					</p>
+					<aside class="notes">The output is placed in the <i>node_modules_mips</i> folder. We 
+					will need to copy the tar file from the running container to our host machine. Then extract it
+					and move the contents to the node_modules folder inside our app on the LinkIt device.</aside>
+				</section>
+				<section>
+					<h4>Coping module to host machine</h4>
+					<pre><code>docker cp <containerId>:/file/path /host/path</code></pre>
+					<h4>extract tar</h4>
+					<pre><code>tar -xf johnny-five-0.10.10_mips.tar.gz</code></pre>
+					<aside class="notes">In a new terminal window not inside the docker container,
+						we can run these commands to copy the file out of the container to the host machine.
+						Then we can extract the tar file like so.
+					</aside>
+				</section>
+				<section>
+					<h4>Copy File from container</h4>
+					<div class="stretch">
+						<img src="assets/copy_node_modules_from_container.png" alt="Copy file from container.">
+					</div>
+					<aside class="notes">The top terminal displays the running container showing our file is in the
+						<i>node_modules_mips</i> folder. In the bottom terminal we can use the Docker cp command
+						to copy the file from the running container to our host machine. Then we extract the tar file
+						to get our johnny-five folder.
+					</aside>
+				</section>
+				<section>
+					<h4>Copy dependency to LinkIt</h4>
+					<pre><code>scp -r johnny-five/ root@192.168.1.114:/root/app/node_modules
+/johnny-five
+					</code></pre>
+					<aside class="notes">This command copies the johnny-five folder and all its contents
+						to the node modules folder of my app on the LinkIt.
+					</aside>
+				</section>
 			</section>
 			<section>Demo or it didn't happen...</section>
 			<section>
