@@ -394,7 +394,7 @@ CMD ["bash"]
 						<img src="assets/custom_image_size.png" alt="Size of custom docker images">
 					</div>
 					<aside class="notes">Once the build finishes, we now have our custom image. We can
-						use the docker images command to list all the images on our machine. The bottom image
+						use the <i>docker images</i> command to list all the images on our machine. The bottom image
 						shows the Ubuntu base image, as well as our custom image.
 					</aside>
 				</section>
@@ -404,6 +404,10 @@ CMD ["bash"]
 					<div class="stretch">
 						<img src="assets/docker_run_image.png" alt="Docker run image">
 					</div>
+					<aside class="notes">To run our custom image, we use the <i>docker run</i>
+						command also passing the flags <i>-it</i> to tell docker we want to be able to
+						interact with the container.
+					</aside>
 				</section>
 				<section>
 					<h4>Exit running container</h4>
@@ -421,6 +425,11 @@ CMD ["bash"]
 					<div class="stretch">
 						<img src="assets/docker_start.png" alt="Start stoped container">
 					</div>
+					<aside class="notes">To start a docker container you use the <i>docker start</i>
+						command along with the container ID. Here we are passing the flags <i>-ai</i> so we can attach to the container and 
+						also interact. <br><br>
+						We can get a list of all the containers by running <i>docker ps -a</i>.
+					</aside>
 				</section>
 			</section>
 			<section>
@@ -482,7 +491,7 @@ CMD ["bash"]
 						<img src="assets/copy_node_modules_from_container.png" alt="Copy file from container.">
 					</div>
 					<aside class="notes">The top terminal displays the running container showing our file is in the
-						<i>node_modules_mips</i> folder. In the bottom terminal we can use the Docker cp command
+						<i>node_modules_mips</i> folder. In the bottom terminal we can use the <i>docker cp</i> command
 						to copy the file from the running container to our host machine. Then we extract the tar file
 						to get our johnny-five folder.
 					</aside>
